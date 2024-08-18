@@ -18,10 +18,12 @@ test.describe('Register Scenarios POM', () => {
 
   test('Register with valid data', async ({}) => {
     await actions.registerFunctions(randomFirstName, randomLastName, randomEmail, 'admin1234');
+    await expect(actions.pageElements.REGISTRATION_SUCCESSFUL_TEXT).toBeVisible();
+    await actions.pageElements.REGISTER_CONTINUE_TO_ACCOUNT_BTN.click();
     await expect(actions.pageElements.MY_ACCOUNT_H2).toBeVisible();
   });
   
-  test('Register with invalid data', async ({}) => {
+  test('Register with existing data', async ({}) => {
     await actions.registerFunctions("Rocky", "Jean", "rocky@rock.com", 'ngadmin1234');
     await expect(actions.pageElements.REGISTRATION_FAILURE_TEXT).toBeVisible();
   });

@@ -45,8 +45,8 @@ class ResistStorePage {
         await this.pageElements.SUBS_NEWSLETTER_TOOGLE.click();
         await this.pageElements.PRIVACY_POLICY_TOOGLE.click();
         await this.pageElements.REGISTER_CONTINUE_BUTTON.click();
-        await expect(this.pageElements.REGISTRATION_SUCCESSFUL_TEXT).toBeVisible();
-        await this.pageElements.REGISTER_CONTINUE_TO_ACCOUNT_BTN.click();
+        await this.page.waitForTimeout(1000);
+
     }
 
     async registerInvalidFormat(firstName, lastName, email, password){

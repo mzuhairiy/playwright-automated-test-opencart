@@ -28,7 +28,7 @@ class PageElements {
         this.LOGIN_PAGE_LINK_REG = page.getByRole('link', { name: 'login page' })
         this.PRIVACY_POLICY_LINK = page.locator('#form-register').getByRole('link', { name: 'Privacy Policy' })
         this.REGISTRATION_SUCCESSFUL_TEXT = page.getByRole('heading', { name: 'Your Account Has Been Created!' });
-        this.REGISTRATION_FAILURE_TEXT = page.getByRole('heading', { name: 'Your Account Has Been Created!' });
+        this.REGISTRATION_FAILURE_TEXT = page.getByText('Warning: E-Mail Address is already registered!');
         this.FIRST_NAME_WARNING = page.getByText('First Name must be between 1 and 32 characters!')
         this.LAST_NAME_WARNING = page.getByText('Last Name must be between 1 and 32 characters!')
         this.EMAIL_WARNING = page.getByText('E-Mail Address does not appear to be valid!')
