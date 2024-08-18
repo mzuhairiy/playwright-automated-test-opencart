@@ -2,33 +2,29 @@
     {
         "firstName": "",
         "lastName": "ValidLastName",
-        "email": "test@example.com",
-        "password": "Password123",
         "expected": "First Name must be between 1 and 32 characters!",
-        "validationField": "FIRST_NAME_WARNING"
+        "validationField": "FIRST_NAME_WARNING",
+        "type": "name validation"
     },
     {
         "firstName": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "lastName": "ValidLastName",
-        "email": "test@example.com",
-        "password": "Password123",
         "expected": "First Name must be between 1 and 32 characters!",
-        "validationField": "FIRST_NAME_WARNING"
+        "validationField": "FIRST_NAME_WARNING",
+        "type": "name validation"
     },
     {
         "firstName": "ValidFirstName",
         "lastName": "",
-        "email": "test@example.com",
-        "password": "Password123",
         "expected": "Last Name must be between 1 and 32 characters!",
-        "validationField": "LAST_NAME_WARNING"
+        "validationField": "LAST_NAME_WARNING",
+        "type": "name validation"
     },
     {
         "firstName": "ValidFirstName",
         "lastName": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "email": "test@example.com",
-        "password": "Password123",
         "expected": "Last Name must be between 1 and 32 characters!",
-        "validationField": "LAST_NAME_WARNING"
+        "validationField": "LAST_NAME_WARNING",
+        "type": "name validation"
     }
 ]

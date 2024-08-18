@@ -36,6 +36,7 @@ class PageElements {
         this.PRIVACY_POLICY_WARNING = page.getByText('Warning: You must agree to the Privacy Policy!')
         this.REGISTER_CONTINUE_TO_ACCOUNT_BTN = page.locator("//a[normalize-space()='Continue']")
         
+        
 
 
         
