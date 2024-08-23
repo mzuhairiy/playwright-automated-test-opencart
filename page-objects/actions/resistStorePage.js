@@ -47,6 +47,21 @@ class ResistStorePage {
         await this.pageElements.REGISTER_CONTINUE_BUTTON.click();
         await this.page.waitForTimeout(500);
     }
+
+    async selectRandomProduct(){
+        const productCount = await this.pageElements.PRODUCT_IMAGES.count(); // Count the products
+        const randomIndex = Math.floor(Math.random() * productCount) + 1; // Select random product
+        const randomProductLocator = this.page.locator(`div:nth-child(${randomIndex}) > .product-thumb > .image`);
+        
+        await randomProductLocator.click();
+    }
+
+    async assertProductTitleAndAttributes(){
+        const title = await this.pageElements.PRODUCT_TITLE_HEADING.textContent(); // Get text from product title
+        const productAttributes = await this.pageElements.PRODUCT_ATTRIBUTES.textContent(); // Get text from product attributes
+        console.log(`Product Title: ${title}`); // Print product title
+        return title;
+    }
 }
 
 export default ResistStorePage;
