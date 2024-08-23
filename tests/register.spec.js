@@ -21,21 +21,21 @@ test.describe('Register Scenarios POM', () => {
 
   test('Register with valid data', async ({}) => {
     await actions.registerFunctions(randomFirstName, randomLastName, randomEmail, 'admin1234');
-    await expect(actions.pageElements.REGISTRATION_SUCCESSFUL_TEXT).toBeVisible();
-    await actions.pageElements.REGISTER_CONTINUE_TO_ACCOUNT_BTN.click();
-    await expect(actions.pageElements.MY_ACCOUNT_H2).toBeVisible();
+    await expect(elements.REGISTRATION_SUCCESSFUL_TEXT).toBeVisible();
+    await elements.REGISTER_CONTINUE_TO_ACCOUNT_BTN.click();
+    await expect(elements.MY_ACCOUNT_H2).toBeVisible();
   });
   
   test('Register with existing data', async ({}) => {
     await actions.registerFunctions("Rocky", "Jean", "rocky@rock.com", 'ngadmin1234');
-    await expect(actions.pageElements.REGISTRATION_FAILURE_TEXT).toBeVisible();
+    await expect(elements.REGISTRATION_FAILURE_TEXT).toBeVisible();
   });
 
     // Verify validation errors are displayed when attempting to register with invalid values.
     testNameData.forEach(({ firstName, lastName, expected, validationField }, index) => {
       test(`Validation errors ${index + 1}: First Name: "${firstName}", Last Name: "${lastName}"`, async () => {
         await actions.registerFunctions(firstName, lastName, randomEmail, 'admin1234');
-        await expect(actions.pageElements[validationField]).toHaveText(expected);
+        await expect(elements[validationField]).toHaveText(expected);
       })
     })
 
