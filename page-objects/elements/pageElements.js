@@ -1,5 +1,7 @@
 class PageElements {
     constructor(page) {
+
+        // Register and Login Elements
         this.page = page;
         this.REGISTER_LINK = this.page.locator("//a[normalize-space()='Register']")
         this.LOGIN_LINK = this.page.locator("//a[normalize-space()='Login']")
@@ -35,11 +37,16 @@ class PageElements {
         this.PASSWORD_WARNING = page.getByText('Password must be between 4 and 20 characters!')
         this.PRIVACY_POLICY_WARNING = page.getByText('Warning: You must agree to the Privacy Policy!')
         this.REGISTER_CONTINUE_TO_ACCOUNT_BTN = page.locator("//a[normalize-space()='Continue']")
-        
-        
+        this.HOME_ICON = page.locator('.breadcrumb-item').first();
 
+        // Page and Products Elements
+        this.PRODUCT_IMAGES = page.locator(".product-thumb");
+        this.ADD_TO_CART_ICON = page.getByLabel('Add to Cart').nth(0);
+        this.PRODUCT_TITLE_HEADING = page.locator('h1');
+        this.FEATURED_H1 = page.getByRole('heading', { name: 'Featured' });
+        this.PRICE_TEXT = page.locator("ul[class='list-unstyled'] li h2");
+        this.PRODUCT_ATTRIBUTES = page.locator("body > main:nth-child(4) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > ul:nth-child(2)");
 
-        
 
     }
 }
