@@ -52,6 +52,7 @@ class ResistStorePage {
         const productCount = await this.pageElements.PRODUCT_IMAGES.count(); // Count the products
         const randomIndex = Math.floor(Math.random() * productCount) + 1; // Select random product
         const randomProductLocator = this.page.locator(`div:nth-child(${randomIndex}) > .product-thumb > .image`);
+        console.log(`Total Products: ${productCount}`);
         
         await randomProductLocator.click();
     }
@@ -59,8 +60,18 @@ class ResistStorePage {
     async assertProductTitleAndAttributes(){
         const title = await this.pageElements.PRODUCT_TITLE_HEADING.textContent(); // Get text from product title
         const productAttributes = await this.pageElements.PRODUCT_ATTRIBUTES.textContent(); // Get text from product attributes
-        console.log(`Product Title: ${title}`); // Print product title
+        console.log(`Selected Product: ${title}`); // Print product title
         return title;
+    }
+
+    async addRandomProductToCart(){
+        const addToCartIcon = await this.page.locator('div.button-group:nth-child(1) > button:nth-child(1)');
+        const iconCount = await addToCartIcon.count();
+        const randomIndex = Math.floor(Math.random() * iconCount); // Select random add to cart icon
+        console.log(`Total add to cart icons: ${iconCount}`);
+
+        await addToCartIcon.nth(randomIndex).click();
+        await this.page.waitForTimeout(1000);
     }
 }
 

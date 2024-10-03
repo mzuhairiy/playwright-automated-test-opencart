@@ -3,6 +3,8 @@ import { faker } from '@faker-js/faker';
 import ResistStoreActions from '../page-objects/actions/resistStorePage';
 import PageElements from '../page-objects/elements/pageElements';
 import testNameData from '../tests/test-data/register-data-name-validation';
+const { checkUserDataInDatabase } = require('../utils/db-regis.js');
+
 
 const randomFirstName = faker.person.firstName();
 const randomLastName = faker.person.lastName();
@@ -24,6 +26,15 @@ test.describe('Register Scenarios POM', () => {
     await expect(elements.REGISTRATION_SUCCESSFUL_TEXT).toBeVisible();
     await elements.REGISTER_CONTINUE_TO_ACCOUNT_BTN.click();
     await expect(elements.MY_ACCOUNT_H2).toBeVisible();
+
+    // Check database setelah registrasi
+    const userData = await checkUserDataInDatabase(randomEmail);
+    expect(userData[0].firstname).toBe(randomFirstName);
+    expect(userData[0].lastname).toBe(randomLastName);
+    expect(userData[0].email).toBe(randomEmail);
+    console.log(`The user has been successfully registered and stored in the database.`);
+    console.log('--------------------------------------------------------------------')
+    console.log(`User Data\nFirst Name: ${userData[0].firstname}\nLast Name: ${userData[0].lastname}\nEmail: ${userData[0].email}`);
   });
   
   test('Register with existing data', async ({}) => {
