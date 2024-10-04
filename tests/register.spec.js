@@ -5,7 +5,6 @@ import PageElements from '../page-objects/elements/pageElements';
 import testNameData from '../tests/test-data/register-data-name-validation';
 const { checkUserDataInDatabase } = require('../utils/db-regis.js');
 
-
 const randomFirstName = faker.person.firstName();
 const randomLastName = faker.person.lastName();
 const randomEmail = faker.internet.email();
@@ -27,7 +26,7 @@ test.describe('Register Scenarios POM', () => {
     await elements.REGISTER_CONTINUE_TO_ACCOUNT_BTN.click();
     await expect(elements.MY_ACCOUNT_H2).toBeVisible();
 
-    // Check database setelah registrasi
+    // Checking database
     const userData = await checkUserDataInDatabase(randomEmail);
     expect(userData[0].firstname).toBe(randomFirstName);
     expect(userData[0].lastname).toBe(randomLastName);
