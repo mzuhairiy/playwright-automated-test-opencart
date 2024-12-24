@@ -20,7 +20,21 @@ test.describe('Register Scenarios POM', () => {
     await expect(page).toHaveTitle(/Resist Store/);
   });
 
-  
+  test('Register with valid data', async ({}) => {
+    await actions.registerFunctions(randomFirstName, randomLastName, randomEmail, 'admin1234');
+    await expect(elements.REGISTRATION_SUCCESSFUL_TEXT).toBeVisible();
+    await elements.REGISTER_CONTINUE_TO_ACCOUNT_BTN.click();
+    await expect(elements.MY_ACCOUNT_H2).toBeVisible();
+
+    // Checking database
+    const userData = await checkUserDataInDatabase(randomEmail);
+    expect(userData[0].firstname).toBe(randomFirstName);
+    expect(userData[0].lastname).toBe(randomLastName);
+    expect(userData[0].email).toBe(randomEmail);
+    console.log(`The user has been successfully registered and stored in the database.`);
+    console.log('--------------------------------------------------------------------')
+    console.log(`User Data\nFirst Name: ${userData[0].firstname}\nLast Name: ${userData[0].lastname}\nEmail: ${userData[0].email}`);
+  });
   
   test('Register with existing data', async ({}) => {
     await actions.registerFunctions("Rocky", "Jean", "rocky@rock.com", 'ngadmin1234');
