@@ -8,7 +8,6 @@ async function connectToDatabase() {
             password: '',
             database: 'demo'
         });
-        console.log('Connected to the Db.');
         return connection;
 
     } catch (error) {

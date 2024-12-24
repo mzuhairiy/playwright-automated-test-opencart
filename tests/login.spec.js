@@ -22,6 +22,7 @@ test.describe('Login Scenarios POM', () => {
     await actions.loginFunctions('yz@mailinator.com', 'ngadmin')
     await expect(elements.ERROR_ALERT).toBeVisible();
   });
+  
   test('User successfully resets the password.', async ({}) => {
     await actions.forgottenPassword('jyzyzonex@mailinator.com')
     await expect(elements.SUCCESS_FORGOT_PASSWORD).toBeVisible();

@@ -9,7 +9,10 @@
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@playwright/test": "^1.46.0",
+    "@playwright/test": "^1.47.1",
     "@types/node": "^22.1.0"
+  },
+  "dependencies": {
+    "mysql2": "^3.11.3"
   }
 }

@@ -1,19 +1,14 @@
 const mysql = require('mysql2/promise');
+const { connectToDatabase } = require('./db-utils');
 
 async function checkUserDataInDatabase(email) {
     try {
-        const connection = await mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '',
-            database: 'demo'
-        });
-
-        // Query untuk mencari data user berdasarkan email
+        const connection = await connectToDatabase();
         const [rows] = await connection.execute(
             'SELECT * FROM oc_customer WHERE email = ?',
             [email]
         );
+        
         await connection.end();
         return rows;
 

@@ -115,7 +115,7 @@ class ResistStorePage {
     async selectRandomRegion(){
         const regionDropdown = await this.pageElements.REGION_DROPDOWN_CO;
         await this.pageElements.REGION_DROPDOWN_CO.click();
-        const regionOptions = await regionDropdown.locator('option').filter({ hasText: /^(?!Please Select).*$/ }).all();
+        const regionOptions = await regionDropdown.locator('option').filter({ hasText: /^(?!.*Please Select).*$/ }).all();
         const regionRandomOption = regionOptions[Math.floor(Math.random() * regionOptions.length)];
         const regionRandomValue = await regionRandomOption.getAttribute('value');
         await regionDropdown.selectOption(regionRandomValue);

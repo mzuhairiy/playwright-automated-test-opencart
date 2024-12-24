@@ -63,6 +63,7 @@ test.describe('Product Scenarios POM', () => {
     }
     await elements.COMMENT_FIELD_CO.fill("test checkout");
     await elements.CONFIRM_ORDER_BTN.dblclick();
+    await page.waitForTimeout(1000);
     await expect(elements.SUCCESS_ORDER_H1).toBeVisible();
     await expect(elements.SUCCESS_ORDER_H1).toHaveText("Your order has been placed!");
     
