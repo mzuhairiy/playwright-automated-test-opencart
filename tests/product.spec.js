@@ -44,6 +44,17 @@ test.describe('Product Scenarios POM', () => {
     await actions.addRandomProductToCart();
   });
 
+  test('Add a product from the product page to the cart. ', async ({ page }) => {
+    await actions.loginFunctions('Kendrick.Smitham90@hotmail.com', 'abcd1234');
+    await expect(elements.MY_ACCOUNT_H2).toBeVisible();
+    await elements.HOME_ICON.click();
+    await expect(elements.FEATURED_H1).toBeVisible();
+    await elements.NAV_DESKTOPS.click();
+    await expect(elements.NAV_DESKTOPS_H2).toBeVisible();
+    await elements.PRODUCT_PAGE_CART_BTN.click();
+    await expect(elements.H1_PRODUCT).toBeVisible();
+  });
+
   test('Checkout a product from the homepage - Guest', async ({ page }) => {
     const randomIndex = await actions.addRandomProductToCart();
     await elements.ALERT_CLOSE_BTN.click();

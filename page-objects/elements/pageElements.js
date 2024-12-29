@@ -89,6 +89,20 @@ class PageElements {
         this.CONFIRM_ORDER_BTN = page.getByRole('button', { name: 'Confirm Order'})
         this.SUCCESS_ORDER_H1 = page.getByRole('heading', { name: 'Your order has been placed!'})
         this.CONTINUE_SUCCESS_ORDER_BTN = page.getByRole('link', { name: 'Continue' })
+
+        //Nav-Bar menus
+        this.NAV_DESKTOPS = page.locator('main li:nth-child(1) a:nth-child(1)');
+        this.NAV_LAPTOPS = page.locator('main li:nth-child(2) a:nth-child(1)');
+        this.NAV_COMPONENTS = page.locator('main li:nth-child(3) a:nth-child(1)');
+        this.NAV_TABLETS = page.locator('main li:nth-child(4) a:nth-child(1)');
+        this.NAV_SOFTWARE = page.locator('main li:nth-child(5) a:nth-child(1)');
+        this.NAV_PHONES = page.locator('main li:nth-child(6) a:nth-child(1)');
+        this.NAV_CAMERAS = page.locator('main li:nth-child(7) a:nth-child(1)');
+        this.NAV_MP3 = page.locator('main li:nth-child(8) a:nth-child(1)');
+        this.NAV_DESKTOPS_H2 = page.locator("//h2[contains(text(),'Desktops')]");
+        this.PRODUCT_PAGE_CART_BTN = page.locator('div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > button:nth-child(1)');
+        this.H1_PRODUCT = page.locator("//h1[contains(text(),'Apple Cinema 30\"')]");
+
     }   
 }
 
