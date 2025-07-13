@@ -45,7 +45,7 @@ export default class ResistStorePage {
         await this.pageElements.CONTINUE_FORGOT_PASSWORD.click();
     }
 
-    async registerFunctions(firstName, lastName, email, password) {
+    async registerFunctions({ firstName, lastName, email, password} ) {
         await this.pageElements.MY_ACCOUNT_DROPDOWN.click();
         await this.pageElements.REGISTER_LINK.click();
         await expect(this.pageElements.REGISTER_ACCOUNT_H1).toBeVisible();

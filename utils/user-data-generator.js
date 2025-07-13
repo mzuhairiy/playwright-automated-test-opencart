@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-export function generateUserData() {
+export function generateUserCheckoutData() {
   return {
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
@@ -11,4 +11,13 @@ export function generateUserData() {
     city: faker.location.city(),
     postcode: faker.finance.routingNumber()
   };
+}
+
+export function generateUserCreds(){
+  return {
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    email: faker.internet.email(),
+    password: "admin1234"
+  }
 }
