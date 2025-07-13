@@ -1,11 +1,13 @@
 import { test, expect } from '@playwright/test';
-import { generateUserData } from '../utils/user-data-generator';
+import { generateUserCheckoutData } from '../utils/user-data-generator';
 import ResistStorePage from '../page-objects/actions/resistStorePage';
 import PageElements from '../page-objects/elements/pageElements';
 import config from '../app-config/config.json';
 
 test.describe('Product Scenarios POM', () => {
+  /** @type {ResistStorePage} */
   let actions;
+  /** @type {PageElements} */
   let elements;
 
   test.beforeEach(async ({ page }) => {
@@ -48,7 +50,7 @@ test.describe('Product Scenarios POM', () => {
   });
 
   test('Checkout a product from the homepage - Guest', async ({ page }) => {
-    const userData = generateUserData();
+    const userData = generateUserCheckoutData();
     const randomIndex = await actions.addRandomProductToCart();
     await elements.ALERT_CLOSE_BTN.click();
     await actions.guestCheckoutFromHomepage(userData);

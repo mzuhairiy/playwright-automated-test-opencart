@@ -1,17 +1,15 @@
 import { test, expect } from '@playwright/test';
-import { faker } from '@faker-js/faker';
+import { generateUserCreds } from '../utils/user-data-generator.js';
 import ResistStorePage from '../page-objects/actions/resistStorePage';
 import PageElements from '../page-objects/elements/pageElements';
 import testNameData from '../tests/test-data/register-data-name-validation';
 import config from '../app-config/config.json'
 const { checkUserDataInDatabase } = require('../utils/db-regis.js');
 
-const randomFirstName = faker.person.firstName();
-const randomLastName = faker.person.lastName();
-const randomEmail = faker.internet.email();
-
 test.describe('Register Scenarios POM', () => {
+   /** @type {ResistStorePage} */
   let actions;
+  /** @type {PageElements} */
   let elements;
 
   test.beforeEach(async ({ page }) => {
@@ -22,16 +20,17 @@ test.describe('Register Scenarios POM', () => {
   });
 
   test('Register with valid data', async ({}) => {
-    await actions.registerFunctions(randomFirstName, randomLastName, randomEmail, 'admin1234');
+    const userCreds = generateUserCreds();
+    await actions.registerFunctions(userCreds);
     await expect(elements.REGISTRATION_SUCCESSFUL_TEXT).toBeVisible();
     await elements.REGISTER_CONTINUE_TO_ACCOUNT_BTN.click();
     await expect(elements.MY_ACCOUNT_H2).toBeVisible();
 
     // Checking database
-    const userData = await checkUserDataInDatabase(randomEmail);
-    expect(userData[0].firstname).toBe(randomFirstName);
-    expect(userData[0].lastname).toBe(randomLastName);
-    expect(userData[0].email).toBe(randomEmail);
+    const userData = await checkUserDataInDatabase(userCreds.email);
+    expect(userData[0].firstname).toBe(userCreds.firstName);
+    expect(userData[0].lastname).toBe(userCreds.lastName);
+    expect(userData[0].email).toBe(userCreds.email);
     // console.log(`The user has been successfully registered and stored in the database.`);
     // console.log('--------------------------------------------------------------------')
     // console.log(`User Data\nFirst Name: ${userData[0].firstname}\nLast Name: ${userData[0].lastname}\nEmail: ${userData[0].email}`);

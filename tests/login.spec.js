@@ -4,7 +4,9 @@ import PageElements from '../page-objects/elements/pageElements';
 import config from '../app-config/config.json'
 
 test.describe('Login Scenarios POM', () => {
+  /** @type {ResistStorePage} */
   let actions;
+  /** @type {PageElements} */
   let elements;
 
   test.beforeEach(async ({ page }) => {
