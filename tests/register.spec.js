@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
-import ResistStoreActions from '../page-objects/actions/resistStorePage';
+import ResistStorePage from '../page-objects/actions/resistStorePage';
 import PageElements from '../page-objects/elements/pageElements';
 import testNameData from '../tests/test-data/register-data-name-validation';
+import config from '../app-config/config.json'
 const { checkUserDataInDatabase } = require('../utils/db-regis.js');
 
 const randomFirstName = faker.person.firstName();
@@ -14,9 +15,9 @@ test.describe('Register Scenarios POM', () => {
   let elements;
 
   test.beforeEach(async ({ page }) => {
-    actions = new ResistStoreActions(page);
+    actions = new ResistStorePage(page);
     elements = new PageElements(page);
-    await actions.gotoAsync('http://localhost/demo/index.php?route=common/home&language=en-gb')
+    await actions.gotoAsync(config.baseURL)
     await expect(page).toHaveTitle(/Resist Store/);
   });
 
@@ -31,9 +32,9 @@ test.describe('Register Scenarios POM', () => {
     expect(userData[0].firstname).toBe(randomFirstName);
     expect(userData[0].lastname).toBe(randomLastName);
     expect(userData[0].email).toBe(randomEmail);
-    console.log(`The user has been successfully registered and stored in the database.`);
-    console.log('--------------------------------------------------------------------')
-    console.log(`User Data\nFirst Name: ${userData[0].firstname}\nLast Name: ${userData[0].lastname}\nEmail: ${userData[0].email}`);
+    // console.log(`The user has been successfully registered and stored in the database.`);
+    // console.log('--------------------------------------------------------------------')
+    // console.log(`User Data\nFirst Name: ${userData[0].firstname}\nLast Name: ${userData[0].lastname}\nEmail: ${userData[0].email}`);
   });
   
   test('Register with existing data', async ({}) => {

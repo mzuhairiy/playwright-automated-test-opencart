@@ -1,20 +1,21 @@
 import { test, expect } from '@playwright/test';
-import ResistStoreActions from "../page-objects/actions/resistStorePage"
+import ResistStorePage from "../page-objects/actions/resistStorePage"
 import PageElements from '../page-objects/elements/pageElements';
+import config from '../app-config/config.json'
 
 test.describe('Login Scenarios POM', () => {
   let actions;
   let elements;
 
   test.beforeEach(async ({ page }) => {
-    actions = new ResistStoreActions(page);
+    actions = new ResistStorePage(page);
     elements = new PageElements(page);
-    await actions.gotoAsync('http://localhost/demo/index.php?route=common/home&language=en-gb')
-    await expect(page).toHaveTitle(/Resist Store/);
+    await actions.gotoAsync(config.baseURL)
+    await expect(page).toHaveTitle(/Resist Store/);``
   });
 
   test('Login with registered credentials', async ({}) => {
-    await actions.loginFunctions('Kendrick.Smitham90@hotmail.com', 'abcd1234')
+    await actions.loginFunctions(config.validUser.email, config.validUser.password)
     await expect(elements.MY_ACCOUNT_H2).toBeVisible();
   });
 

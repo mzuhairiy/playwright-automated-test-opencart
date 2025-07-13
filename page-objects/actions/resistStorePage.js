@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import PageElements from '../elements/pageElements';
 
-class ResistStorePage {
+export default class ResistStorePage {
     constructor(page) {
         this.page = page;
         this.pageElements = new PageElements(page);
@@ -86,7 +86,7 @@ class ResistStorePage {
         return randomIndex;
     }
 
-    async guestCheckoutFromHomepage(firstName, lastName, email, company, address1, address2, city, postCode) {
+    async guestCheckoutFromHomepage({ firstName,lastName,email,company,address1,address2,city,postcode}) {
         await this.pageElements.BUTTON_CART.click();
         await expect(this.pageElements.CART_DROPDOWN_MENU).toBeVisible();
         await this.pageElements.CHECKOUT_DD_MENU.click();
@@ -99,7 +99,7 @@ class ResistStorePage {
         await this.pageElements.ADDRESS1_FIELD_CO.fill(address1);
         await this.pageElements.ADDRESS2_FIELD_CO.fill(address2);
         await this.pageElements.CITY_FIELD_CO.fill(city);
-        await this.pageElements.POSTCODE_FIELD_CO.fill(postCode);
+        await this.pageElements.POSTCODE_FIELD_CO.fill(postcode);
     }
 
     async selectRandomCountry(){
@@ -109,7 +109,7 @@ class ResistStorePage {
         const countryRandomValue = await countryRandomOption.getAttribute('value');
         await countryDropdown.selectOption(countryRandomValue);
         const selectedCountry = await countryRandomOption.innerText();
-        console.log(`Selected Country: ${selectedCountry}`);
+        // console.log(`Selected Country: ${selectedCountry}`);
     }
 
     async selectRandomRegion(){
@@ -120,7 +120,7 @@ class ResistStorePage {
         const regionRandomValue = await regionRandomOption.getAttribute('value');
         await regionDropdown.selectOption(regionRandomValue);
         const selectedRegion = await regionRandomOption.innerText();
-        console.log(`Selected Region: ${selectedRegion}`);
+        // console.log(`Selected Region: ${selectedRegion}`);
     }
 
     async choosePaymentMethod(){
@@ -137,8 +137,4 @@ class ResistStorePage {
         await this.pageElements.RADIO_FLAT_SHIPPING.click();
         await this.pageElements.CONTINUE_MODAL_SHIPPING.click();
     }
-
-    async 
 }
-
-export default ResistStorePage;

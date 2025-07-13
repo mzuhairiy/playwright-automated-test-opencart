@@ -1,4 +1,4 @@
-class PageElements {
+export default class PageElements {
     constructor(page) {
 
         // Register and Login Elements
@@ -105,5 +105,3 @@ class PageElements {
 
     }   
 }
-
-export default PageElements;
