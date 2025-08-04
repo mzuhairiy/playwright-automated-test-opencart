@@ -4,7 +4,9 @@ import ResistStorePage from '../page-objects/actions/resistStorePage';
 import PageElements from '../page-objects/elements/pageElements';
 import testNameData from '../tests/test-data/register-data-name-validation';
 import config from '../app-config/config.json'
-const { checkUserDataInDatabase } = require('../utils/db-regis.js');
+import { checkUserDataInDatabase } from '../utils/db-helper.js';
+import { getRandomExistingEmail } from '../utils/db-helper.js';
+import { faker } from '@faker-js/faker';
 
 test.describe('Register Scenarios POM', () => {
    /** @type {ResistStorePage} */
@@ -36,28 +38,45 @@ test.describe('Register Scenarios POM', () => {
     // console.log(`User Data\nFirst Name: ${userData[0].firstname}\nLast Name: ${userData[0].lastname}\nEmail: ${userData[0].email}`);
   });
   
-  test('Register with existing data', async ({}) => {
-    await actions.registerFunctions("Rocky", "Jean", "rocky@rock.com", 'ngadmin1234');
+  test('Register with existing email address', async ({}) => {
+    const existingEmail = await getRandomExistingEmail();
+    const userCreds = generateUserCreds();
+    userCreds.email = existingEmail;
+
+    await actions.registerFunctions(userCreds);
     await expect(elements.REGISTRATION_FAILURE_TEXT).toBeVisible();
   });
 
-    // Verify validation errors are displayed when attempting to register with invalid values.
-    testNameData.forEach(({ firstName, lastName, expected, validationField }, index) => {
-      test(`Validation errors ${index + 1}: First Name: "${firstName}", Last Name: "${lastName}"`, async () => {
-        await actions.registerFunctions(firstName, lastName, randomEmail, 'admin1234');
-        await expect(elements[validationField]).toHaveText(expected);
-      })
+    // Verify validation name errors are displayed when attempting to register with invalid values.
+  testNameData.forEach(({ firstName, lastName, expected, validationField }, index) => {
+    test(`Validation name errors ${index + 1}: First Name: "${firstName}", Last Name: "${lastName}"`, async () => {
+      const randomEmail = faker.internet.email();
+      await actions.registerFunctions({ 
+        firstName, 
+        lastName, 
+        email: randomEmail, 
+        password: 'admin1234' 
+      });
+      await expect(elements[validationField]).toHaveText(expected);
     })
+  })
 
-    test('Register with invalid email', async ({ page }) => {
-      await actions.registerFunctions(randomFirstName, randomLastName, 'logan@login', 'admin1234')
-      await expect(elements.EMAIL_WARNING).toBeVisible();
-    });
+  test('Register with invalid email', async ({ page }) => {
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
+    await actions.registerFunctions({
+      firstName, 
+      lastName, 
+      email: 'logan@login',
+      password: 'admin1234'
+    })
+    await expect(elements.EMAIL_WARNING).toBeVisible();
+  });
 
-    test('Email validation', async ({ page }) => {
-      await actions.registerFunctions(randomFirstName, randomLastName, 'eee', 'admin1234');
-      const emailField = elements.REGISTER_EMAIL_FIELD;
-      const validationMessage = await emailField.evaluate(input => input.validationMessage);
-      await expect(validationMessage).toContain("Please include an '@' in the email address.");
+  test('Email validation', async ({ page }) => {
+    await actions.registerFunctions(randomFirstName, randomLastName, 'eee', 'admin1234');
+    const emailField = elements.REGISTER_EMAIL_FIELD;
+    const validationMessage = await emailField.evaluate(input => input.validationMessage);
+    await expect(validationMessage).toContain("Please include an '@' in the email address.");
     });
 });
