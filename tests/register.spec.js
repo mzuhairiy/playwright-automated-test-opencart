@@ -3,6 +3,7 @@ import { generateUserCreds } from '../utils/user-data-generator.js';
 import ResistStorePage from '../page-objects/actions/resistStorePage';
 import PageElements from '../page-objects/elements/pageElements';
 import testNameData from '../tests/test-data/register-data-name-validation';
+import testPasswordData from '../tests/test-data/register-data-password-validation';
 import config from '../app-config/config.json'
 import { checkUserDataInDatabase } from '../utils/db-helper.js';
 import { getRandomExistingEmail } from '../utils/db-helper.js';
@@ -21,7 +22,7 @@ test.describe('Register Scenarios POM', () => {
     await expect(page).toHaveTitle(/Resist Store/);
   });
 
-  test('Register with valid data', async ({}) => {
+  test('User should be able to register with valid data', async ({}) => {
     const userCreds = generateUserCreds();
     await actions.registerFunctions(userCreds);
     await expect(elements.REGISTRATION_SUCCESSFUL_TEXT).toBeVisible();
@@ -38,7 +39,7 @@ test.describe('Register Scenarios POM', () => {
     // console.log(`User Data\nFirst Name: ${userData[0].firstname}\nLast Name: ${userData[0].lastname}\nEmail: ${userData[0].email}`);
   });
   
-  test('Register with existing email address', async ({}) => {
+  test('User should not be able to register with existing email address', async ({}) => {
     const existingEmail = await getRandomExistingEmail();
     const userCreds = generateUserCreds();
     userCreds.email = existingEmail;
@@ -61,7 +62,21 @@ test.describe('Register Scenarios POM', () => {
     })
   })
 
-  test('Register with invalid email', async ({ page }) => {
+  testPasswordData.forEach(({ password, expected, validationField }, index) => {
+    test(`Validation password errors ${index + 1}: Password: "${password}"`, async () => {
+      const firstName = faker.person.firstName();
+      const lastName = faker.person.lastName();
+      await actions.registerFunctions({
+        firstName,
+        lastName,
+        email: faker.internet.email(),
+        password
+      });
+      await expect(elements[validationField]).toHaveText(expected);
+    })
+  });
+
+  test('User should not be able to register with an invalid email', async ({ page }) => {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     await actions.registerFunctions({
@@ -73,10 +88,28 @@ test.describe('Register Scenarios POM', () => {
     await expect(elements.EMAIL_WARNING).toBeVisible();
   });
 
-  test('Email validation', async ({ page }) => {
-    await actions.registerFunctions(randomFirstName, randomLastName, 'eee', 'admin1234');
+  test('System should display an error for invalid email format', async ({ page }) => {
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
+    await actions.registerFunctions({
+      firstName,
+      lastName,
+      email: 'eee',
+      password: 'admin1234'
+    });
     const emailField = elements.REGISTER_EMAIL_FIELD;
     const validationMessage = await emailField.evaluate(input => input.validationMessage);
-    await expect(validationMessage).toContain("Please include an '@' in the email address.");
+    expect(validationMessage).toContain("Please include an '@' in the email address.");
     });
+
+    test('User should not be able to register with an invalid password', async ({ page }) => {
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
+    await actions.registerFunctions({
+      firstName, 
+      lastName,
+      email: faker.internet.email(),
+      password: '123'
+    });
+  });
 });
