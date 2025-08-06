@@ -67,6 +67,27 @@ export default class ResistStorePage {
         await randomProductLocator.click();
     }
 
+    async compareRandomProduct() {
+        const productCount = await this.pageElements.PRODUCT_IMAGES.count();
+        if (productCount < 2) {
+            throw new Error('Need at least 2 products to compare');
+        }
+        // Pilih 2 index acak yang unik
+        const indices = new Set();
+        while (indices.size < 2) {
+            const randomIndex = Math.floor(Math.random() * productCount) + 1;
+            indices.add(randomIndex);
+        }
+
+        for (const index of indices) {
+            const compareBtnLocator = this.page.locator(
+            `body > main:nth-child(4) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div:nth-child(${index}) > div:nth-child(1) > div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > button:nth-child(3)`
+            );
+            await compareBtnLocator.click();
+        }
+        await this.pageElements.PRODUCT_COMPARISON_LINK.click();
+    }
+
     async assertProductTitleAndAttributes() {
         const title = await this.pageElements.PRODUCT_TITLE_HEADING.textContent(); // Get text from product title
         const productAttributes = await this.pageElements.PRODUCT_ATTRIBUTES.textContent(); // Get text from product attributes

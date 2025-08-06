@@ -71,7 +71,15 @@ test.describe('Product Scenarios POM', () => {
     await elements.CONFIRM_ORDER_BTN.click();
     await page.waitForTimeout(1000);
     await expect(elements.SUCCESS_ORDER_H1).toBeVisible();
-    await expect(elements.SUCCESS_ORDER_H1).toHaveText("Your order has been placed!");
-    
+    await expect(elements.SUCCESS_ORDER_H1).toHaveText('Your order has been placed!');
+  });
+
+  test('Should be able to do product comparison', async ({ page }) => {
+    await actions.loginFunctions(config.validUser.email, config.validUser.password);
+    await expect(elements.MY_ACCOUNT_H2).toBeVisible();
+    await elements.HOME_ICON.click();
+    await expect(elements.FEATURED_H1).toBeVisible();
+    await actions.compareRandomProduct();
+    await expect(elements.PRODUCT_COMPARISON_H1).toBeVisible();
   });
 });
