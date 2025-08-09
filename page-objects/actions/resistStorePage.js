@@ -59,12 +59,37 @@ export default class ResistStorePage {
         await this.page.waitForTimeout(500);
     }
 
-    async selectRandomProduct() {
+    async selectRandomProductFromHomepage() {
         const productCount = await this.pageElements.PRODUCT_IMAGES.count(); // Count the products
         const randomIndex = Math.floor(Math.random() * productCount) + 1; // Select random product
         const randomProductLocator = this.page.locator(`div:nth-child(${randomIndex}) > .product-thumb > .image`);
-        console.log(`Total Products: ${productCount}`);
+        //console.log(`Total Products: ${productCount}`);
         await randomProductLocator.click();
+    }
+
+    async CheckRemoveAProductFromCart() {
+        await this.pageElements.CART_BUTTON.click();
+        await this.pageElements.CART_CLOSE_BUTTON.click();
+        await expect(this.pageElements.SUCCESS_REMOVE_FROM_CART).toBeVisible();
+        await this.pageElements.CLOSE_SUCCESS_REMOVE_BTN.click();
+        await this.pageElements.CART_BUTTON.click();
+        await expect(this.pageElements.CART_IS_EMPTY_TEXT).toBeVisible();
+    }
+
+    async CheckRemoveProductsFromCart() {
+        await this.pageElements.CART_BUTTON.click();
+        while (await this.pageElements.CART_CLOSE_BUTTON.count() > 0) {
+            // Klik tombol close pertama
+            await this.pageElements.CART_CLOSE_BUTTON.first().click();
+            // Tunggu popup success muncul
+            await expect(this.pageElements.SUCCESS_REMOVE_FROM_CART).toBeVisible();
+            // Close popup
+            await this.pageElements.CLOSE_SUCCESS_REMOVE_BTN.click();
+            // Buka lagi cart (karena tadi tertutup setelah klik close)
+            await this.pageElements.CART_BUTTON.click();
+        }
+        // Setelah loop selesai, cek teks "Your Cart is Empty"
+        await expect(this.pageElements.CART_IS_EMPTY_TEXT).toBeVisible();
     }
 
     async compareRandomProduct() {
@@ -79,11 +104,17 @@ export default class ResistStorePage {
             indices.add(randomIndex);
         }
 
+        let clickCount = 0;
         for (const index of indices) {
             const compareBtnLocator = this.page.locator(
             `body > main:nth-child(4) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div:nth-child(${index}) > div:nth-child(1) > div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > button:nth-child(3)`
             );
             await compareBtnLocator.click();
+            clickCount++;
+            if (clickCount === 1) {
+            // Tunggu 1 detik setelah klik pertama
+                await this.page.waitForTimeout(1000);
+            }
         }
         await this.pageElements.PRODUCT_COMPARISON_LINK.click();
     }
@@ -95,7 +126,7 @@ export default class ResistStorePage {
         return title;
     }
 
-    async addRandomProductToCart() {
+    async addARandomProductFromHomepageToCart() {
         const addToCartIcon = await this.page.locator('div.button-group:nth-child(1) > button:nth-child(1)');
         const validIndexes = [0, 1];
         const randomIndex = validIndexes[Math.floor(Math.random() * validIndexes.length)];
@@ -103,8 +134,21 @@ export default class ResistStorePage {
         await addToCartIcon.nth(randomIndex).click();
         await this.page.waitForTimeout(1000);
         await expect(this.pageElements.SUCCESS_ADD_TO_CART).toBeVisible();
+        await this.pageElements.CLOSE_SUCCESS_ADD_TO_CART_BTN.click();
+    }
 
-        return randomIndex;
+    async addMultipleProductsFromHomepageToCart() {
+    const addToCartIcon = this.page.locator('div.button-group:nth-child(1) > button:nth-child(1)');
+    const validIndexes = [0, 1];
+    const totalAdd = 5;
+
+        for (let i = 0; i < totalAdd; i++) {
+            const index = validIndexes[i % validIndexes.length]; // looping index 0,1,0,1...
+            await addToCartIcon.nth(index).click();
+            await this.page.waitForTimeout(1000);
+            await expect(this.pageElements.SUCCESS_ADD_TO_CART).toBeVisible();
+            await this.pageElements.CLOSE_SUCCESS_ADD_TO_CART_BTN.click();
+        }
     }
 
     async guestCheckoutFromHomepage({ firstName,lastName,email,company,address1,address2,city,postcode}) {

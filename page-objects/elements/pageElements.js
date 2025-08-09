@@ -92,6 +92,12 @@ export default class PageElements {
         this.COMPARE_PRODUCT_BTN = page.locator('body > main:nth-child(4) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > button:nth-child(3)');
         this.PRODUCT_COMPARISON_LINK = page.locator('#alert .alert-success a:nth-of-type(2)');
         this.PRODUCT_COMPARISON_H1 = page.locator("div[id='content'] h1");
+        this.PRODUCT_COMPARISON_CONTENT_TABLE = page.locator("#content table");
+        this.CART_BUTTON = page.locator(".btn.btn-lg.btn-inverse.btn-block.dropdown-toggle");
+        this.CART_CLOSE_BUTTON = page.locator(".btn.btn-danger");
+        this.CLOSE_SUCCESS_ADD_TO_CART_BTN = page.locator("button.btn-close");
+        this.CLOSE_SUCCESS_REMOVE_BTN = page.locator("button.btn-close");
+        this.CART_IS_EMPTY_TEXT = page.locator('//li[contains(text(), "Your shopping cart is empty!")]');
 
         //Nav-Bar menus
         this.NAV_DESKTOPS = page.locator('main li:nth-child(1) a:nth-child(1)');
@@ -103,7 +109,7 @@ export default class PageElements {
         this.NAV_CAMERAS = page.locator('main li:nth-child(7) a:nth-child(1)');
         this.NAV_MP3 = page.locator('main li:nth-child(8) a:nth-child(1)');
         this.NAV_DESKTOPS_H2 = page.locator("//h2[contains(text(),'Desktops')]");
-        this.PRODUCT_PAGE_CART_BTN = page.locator('div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > button:nth-child(1)');
+        this.PRODUCT_PAGE_ADD_TO_CART_BTN = page.locator('div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > button:nth-child(1)');
         this.H1_PRODUCT = page.locator("//h1[contains(text(),'Apple Cinema 30\"')]");
     }   
 }

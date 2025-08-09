@@ -17,7 +17,7 @@ test.describe('Product Scenarios POM', () => {
     await expect(page).toHaveTitle(/Resist Store/);
   })
 
-  test('View product details by clicking on its image', async ({}) => {
+  test('Should be able to see product details when open a product from the homepage', async ({}) => {
     await actions.loginFunctions(config.validUser.email, config.validUser.password)
     await expect(elements.MY_ACCOUNT_H2).toBeVisible();
     await elements.HOME_ICON.click();
@@ -45,7 +45,7 @@ test.describe('Product Scenarios POM', () => {
     await expect(elements.FEATURED_H1).toBeVisible();
     await elements.NAV_DESKTOPS.click();
     await expect(elements.NAV_DESKTOPS_H2).toBeVisible();
-    await elements.PRODUCT_PAGE_CART_BTN.click();
+    await elements.PRODUCT_PAGE_ADD_TO_CART_BTN.click();
     await expect(elements.H1_PRODUCT).toBeVisible();
   });
 
@@ -81,5 +81,24 @@ test.describe('Product Scenarios POM', () => {
     await expect(elements.FEATURED_H1).toBeVisible();
     await actions.compareRandomProduct();
     await expect(elements.PRODUCT_COMPARISON_H1).toBeVisible();
+    await expect(elements.PRODUCT_COMPARISON_CONTENT_TABLE).toBeVisible();
+  });
+
+  test('Should be able to remove a single product from cart after adding it from homepage', async ({ page }) => {
+    await actions.loginFunctions(config.validUser.email, config.validUser.password);
+    await expect(elements.MY_ACCOUNT_H2).toBeVisible();
+    await elements.HOME_ICON.click();
+    await expect(elements.FEATURED_H1).toBeVisible();
+    await actions.addARandomProductFromHomepageToCart();
+    await actions.CheckRemoveAProductFromCart();
+  });
+
+  test('Shoulde be able to remove multiple products from cart after adding them from homepage', async ({ page }) => {
+    await actions.loginFunctions(config.validUser.email, config.validUser.password);
+    await expect(elements.MY_ACCOUNT_H2).toBeVisible();
+    await elements.HOME_ICON.click();
+    await expect(elements.FEATURED_H1).toBeVisible();
+    await actions.addMultipleProductsFromHomepageToCart();
+    await actions.CheckRemoveProductsFromCart();
   });
 });
