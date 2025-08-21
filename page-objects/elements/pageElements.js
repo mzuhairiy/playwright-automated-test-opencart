@@ -86,7 +86,7 @@ export default class PageElements {
         this.CONTINUE_MODAL_PAYMENT = page.locator('#button-payment-method')
         this.CONTINUE_MODAL_SHIPPING = page.locator('#button-shipping-method')
         this.BANK_TRANSFER_INSTRUCTIONS = page.locator("div[id='checkout-payment'] fieldset")
-        this.CONFIRM_ORDER_BTN = page.getByRole('button', { name: 'Confirm Order'})
+        this.CONFIRM_ORDER_BTN = page.locator("//button[@id='button-confirm']")
         this.SUCCESS_ORDER_H1 = page.getByRole('heading', { name: 'Your order has been placed!'})
         this.CONTINUE_SUCCESS_ORDER_BTN = page.getByRole('link', { name: 'Continue' })
         this.COMPARE_PRODUCT_BTN = page.locator('body > main:nth-child(4) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > button:nth-child(3)');
@@ -111,5 +111,10 @@ export default class PageElements {
         this.NAV_DESKTOPS_H2 = page.locator("//h2[contains(text(),'Desktops')]");
         this.PRODUCT_PAGE_ADD_TO_CART_BTN = page.locator('div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > button:nth-child(1)');
         this.H1_PRODUCT = page.locator("//h1[contains(text(),'Apple Cinema 30\"')]");
+        this.SEARCH_INPUT = page.locator('#search input[name="search"]');
+        this.SEARCH_BUTTON = page.locator("//button[@class='btn btn-light btn-lg']");
+        this.SEARCH_RESULT_H1 = page.locator("div[id='content'] h1");
+        this.PRODUCT_DESCRIPTION = page.locator("div[class='description'] p");
+        this.PRODUCT_TITLE = page.locator("div[class='description'] h4 a")
     }   
 }

@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import PageElements from '../elements/pageElements';
+import testData from '../../utils/data.json';
 
 export default class ResistStorePage {
     constructor(page) {
@@ -135,21 +136,21 @@ export default class ResistStorePage {
         await this.page.waitForTimeout(1000);
         await expect(this.pageElements.SUCCESS_ADD_TO_CART).toBeVisible();
         await this.pageElements.CLOSE_SUCCESS_ADD_TO_CART_BTN.click();
+        return randomIndex; // Return the index of the product added to cart
     }
 
-    async addMultipleProductsFromHomepageToCart() {
+    async addMultipleProductsFromHomepageToCart(totalAdd) {
     const addToCartIcon = this.page.locator('div.button-group:nth-child(1) > button:nth-child(1)');
-    const validIndexes = [0, 1];
-    const totalAdd = 5;
+    const validIndexes = [0, 1]; // klik hanya index 0 & 1
 
-        for (let i = 0; i < totalAdd; i++) {
-            const index = validIndexes[i % validIndexes.length]; // looping index 0,1,0,1...
-            await addToCartIcon.nth(index).click();
-            await this.page.waitForTimeout(1000);
-            await expect(this.pageElements.SUCCESS_ADD_TO_CART).toBeVisible();
-            await this.pageElements.CLOSE_SUCCESS_ADD_TO_CART_BTN.click();
-        }
+    for (let i = 0; i < totalAdd; i++) {
+        const index = validIndexes[i % validIndexes.length];
+        await addToCartIcon.nth(index).click();
+        await this.page.waitForTimeout(1000); // kasih jeda biar UI update
+        await expect(this.pageElements.SUCCESS_ADD_TO_CART).toBeVisible();
+        await this.pageElements.CLOSE_SUCCESS_ADD_TO_CART_BTN.click();
     }
+}
 
     async guestCheckoutFromHomepage({ firstName,lastName,email,company,address1,address2,city,postcode}) {
         await this.pageElements.BUTTON_CART.click();
@@ -201,5 +202,16 @@ export default class ResistStorePage {
         await expect(this.pageElements.MODAL_DIALOG_SHIPPING_METHOD).toBeVisible();
         await this.pageElements.RADIO_FLAT_SHIPPING.click();
         await this.pageElements.CONTINUE_MODAL_SHIPPING.click();
+    }
+
+    async searchForProduct(){
+        const products = testData.search.products;
+        const randomProduct = products[Math.floor(Math.random() * products.length)];
+        await this.pageElements.SEARCH_INPUT.fill(randomProduct);
+        await this.pageElements.SEARCH_BUTTON.click();
+        await expect(this.pageElements.SEARCH_RESULT_H1).toBeVisible();
+        await expect(this.pageElements.SEARCH_RESULT_H1).toHaveText(`Search - ${randomProduct}`);
+        await expect(this.pageElements.PRODUCT_TITLE.first()).toContainText(randomProduct);
+        return randomProduct;
     }
 }

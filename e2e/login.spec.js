@@ -13,7 +13,7 @@ test.describe('Login Scenarios POM', () => {
     actions = new ResistStorePage(page);
     elements = new PageElements(page);
     await actions.gotoAsync(config.baseURL)
-    await expect(page).toHaveTitle(/Resist Store/);``
+    await expect(page).toHaveTitle(/Resist Store/);
   });
 
   test('User should be able to login with registered credentials', async ({}) => {
