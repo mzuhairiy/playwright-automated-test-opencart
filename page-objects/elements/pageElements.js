@@ -39,7 +39,7 @@ export default class PageElements {
         this.REGISTER_CONTINUE_TO_ACCOUNT_BTN = page.locator("//a[normalize-space()='Continue']")
         this.HOME_ICON = page.locator('.breadcrumb-item').first();
 
-        // Products, Checkout Elements without login first
+        // Products, Checkout Elements
         this.PRODUCT_IMAGES = page.locator(".product-thumb");
         this.ADD_TO_CART_ICON = page.getByLabel('Add to Cart').nth(0);
         this.ALERT_CLOSE_BTN = page.locator('#alert').getByRole('button');
@@ -98,6 +98,8 @@ export default class PageElements {
         this.CLOSE_SUCCESS_ADD_TO_CART_BTN = page.locator("button.btn-close");
         this.CLOSE_SUCCESS_REMOVE_BTN = page.locator("button.btn-close");
         this.CART_IS_EMPTY_TEXT = page.locator('//li[contains(text(), "Your shopping cart is empty!")]');
+        this.FILTER_OPTIONS = page.locator('#input-sort');
+        this.PRODUCT_PRICE = page.locator(".price > .price-new");
 
         //Nav-Bar menus
         this.NAV_DESKTOPS = page.locator('main li:nth-child(1) a:nth-child(1)');
@@ -114,6 +116,7 @@ export default class PageElements {
         this.SEARCH_INPUT = page.locator('#search input[name="search"]');
         this.SEARCH_BUTTON = page.locator("//button[@class='btn btn-light btn-lg']");
         this.SEARCH_RESULT_H1 = page.locator("div[id='content'] h1");
+        this.NOT_FOUND_RESULT = page.locator("div[id='content'] p");
         this.PRODUCT_DESCRIPTION = page.locator("div[class='description'] p");
         this.PRODUCT_TITLE = page.locator("div[class='description'] h4 a")
     }   

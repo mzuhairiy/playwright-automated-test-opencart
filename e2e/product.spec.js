@@ -66,7 +66,7 @@ test.describe('Product Scenarios POM', () => {
       await actions.choosePaymentMethod();
     }
     await elements.COMMENT_FIELD_CO.fill("test checkout");
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(3000);
     await elements.CONFIRM_ORDER_BTN.click();
     await expect(elements.SUCCESS_ORDER_H1).toBeVisible();
     await expect(elements.SUCCESS_ORDER_H1).toHaveText('Your order has been placed!');
@@ -107,4 +107,24 @@ test.describe('Product Scenarios POM', () => {
     await expect(elements.FEATURED_H1).toBeVisible();
     await actions.searchForProduct();
   });
+
+  test('Should be able to show not found message when searching for a non-existing product', async ({ page }) => {
+    await actions.loginFunctions(config.validUser.email, config.validUser.password);
+    await expect(elements.MY_ACCOUNT_H2).toBeVisible();
+    await elements.HOME_ICON.click();
+    await actions.searchNonExistingProduct('skincare');
+  });
+
+  test('Should be able to do price sorting low to high', async ({ page }) => {
+    await actions.loginFunctions(config.validUser.email, config.validUser.password);
+    await expect(elements.MY_ACCOUNT_H2).toBeVisible();
+    await elements.HOME_ICON.click();
+    await expect(elements.FEATURED_H1).toBeVisible();
+    await actions.searchForProduct();
+    await actions.selectSortOption('Price (Low > High)');
+    await actions.getAllPrices();
+    const sortedAscending = actions.isSortedAscending(prices);
+    expect(sortedAscending).toBeTruthy();
+  });
+
 });

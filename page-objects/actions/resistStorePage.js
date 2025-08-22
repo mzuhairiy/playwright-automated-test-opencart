@@ -214,4 +214,27 @@ export default class ResistStorePage {
         await expect(this.pageElements.PRODUCT_TITLE.first()).toContainText(randomProduct);
         return randomProduct;
     }
+
+    async searchNonExistingProduct(productName) {
+        await this.pageElements.SEARCH_INPUT.fill(productName);
+        await this.pageElements.SEARCH_BUTTON.click();
+        await expect(this.pageElements.NOT_FOUND_RESULT).toHaveText("There is no product that matches the search criteria.");
+    }
+
+    async selectSortOption(optionText) {
+        await this.pageElements.FILTER_OPTIONS.selectOption({ label: optionText });
+    }
+
+    async getAllPrices() {
+        const prices = await this.pageElements.PRODUCT_PRICE.allTextContents();
+        return prices.map(p => parseFloat(p.replace(/[^0-9.]/g, '')));
+    }
+
+    async isSortedAscending(values) {
+        return values.every((val, i, arr) => i === 0 || arr[i - 1] <= val);
+    }
+
+    async isSortedDescending(values) {
+        return values.every((val, i, arr) => i === 0 || arr[i - 1] >= val);
+    }
 }
