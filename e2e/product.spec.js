@@ -115,7 +115,7 @@ test.describe('Product Scenarios POM', () => {
     await actions.searchNonExistingProduct('skincare');
   });
 
-  test.only('Should be able to do price sorting low to high', async ({ page }) => {
+  test('Should be able to do price sorting low to high', async ({ page }) => {
     await actions.loginFunctions(config.validUser.email, config.validUser.password);
     await expect(elements.MY_ACCOUNT_H2).toBeVisible();
     await elements.HOME_ICON.click();
