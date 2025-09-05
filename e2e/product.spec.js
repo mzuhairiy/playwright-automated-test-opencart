@@ -115,16 +115,30 @@ test.describe('Product Scenarios POM', () => {
     await actions.searchNonExistingProduct('skincare');
   });
 
-  test('Should be able to do price sorting low to high', async ({ page }) => {
+  test.only('Should be able to do price sorting low to high', async ({ page }) => {
     await actions.loginFunctions(config.validUser.email, config.validUser.password);
     await expect(elements.MY_ACCOUNT_H2).toBeVisible();
     await elements.HOME_ICON.click();
     await expect(elements.FEATURED_H1).toBeVisible();
     await actions.searchForProduct();
     await actions.selectSortOption('Price (Low > High)');
+    await expect(elements.PRODUCT_PRICE.first()).toBeVisible();
     await actions.getAllPrices();
+    const prices = await actions.getAllPrices();
     const sortedAscending = actions.isSortedAscending(prices);
     expect(sortedAscending).toBeTruthy();
   });
 
+  test('Should be able to do price sorting high to low', async ({ page }) => {
+  await actions.loginFunctions(config.validUser.email, config.validUser.password);
+  await expect(elements.MY_ACCOUNT_H2).toBeVisible();
+  await elements.HOME_ICON.click();
+  await expect(elements.FEATURED_H1).toBeVisible();
+  await actions.searchForProduct();
+  await actions.selectSortOption('Price (High > Low)');
+  await expect(elements.PRODUCT_PRICE.first()).toBeVisible();
+  const prices = await actions.getAllPrices();
+  const sortedDescending = await actions.isSortedDescending(prices);
+  expect(sortedDescending).toBeTruthy();
+});
 });

@@ -230,11 +230,11 @@ export default class ResistStorePage {
         return prices.map(p => parseFloat(p.replace(/[^0-9.]/g, '')));
     }
 
-    async isSortedAscending(values) {
+     isSortedAscending(values) {
         return values.every((val, i, arr) => i === 0 || arr[i - 1] <= val);
     }
 
-    async isSortedDescending(values) {
+    isSortedDescending(values) {
         return values.every((val, i, arr) => i === 0 || arr[i - 1] >= val);
     }
 }
