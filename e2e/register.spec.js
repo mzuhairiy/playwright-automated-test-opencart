@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { generateUserCreds } from '../utils/user-data-generator.js';
 import ResistStorePage from '../page-objects/actions/resistStorePage.js';
-import PageElements from '../page-objects/elements/pageElements.js';
+import PageElements from '../page-objects/locators/pageElements.js';
 import testNameData from '../tests/test-data/register-data-name-validation';
 import testPasswordData from '../tests/test-data/register-data-password-validation';
 import config from '../app-config/config.json'
@@ -13,11 +13,11 @@ test.describe('Register Scenarios POM', () => {
    /** @type {ResistStorePage} */
   let actions;
   /** @type {PageElements} */
-  let elements;
+  let locators;
 
   test.beforeEach(async ({ page }) => {
     actions = new ResistStorePage(page);
-    elements = new PageElements(page);
+    locators = new PageElements(page);
     await actions.gotoAsync(config.baseURL)
     await expect(page).toHaveTitle(/Resist Store/);
   });
@@ -25,9 +25,9 @@ test.describe('Register Scenarios POM', () => {
   test('User should be able to register with valid data', async ({}) => {
     const userCreds = generateUserCreds();
     await actions.registerFunctions(userCreds);
-    await expect(elements.REGISTRATION_SUCCESSFUL_TEXT).toBeVisible();
-    await elements.REGISTER_CONTINUE_TO_ACCOUNT_BTN.click();
-    await expect(elements.MY_ACCOUNT_H2).toBeVisible();
+    await expect(locators.REGISTRATION_SUCCESSFUL_TEXT).toBeVisible();
+    await locators.REGISTER_CONTINUE_TO_ACCOUNT_BTN.click();
+    await expect(locators.MY_ACCOUNT_H2).toBeVisible();
 
     // Checking database
     const userData = await checkUserDataInDatabase(userCreds.email);
@@ -45,7 +45,7 @@ test.describe('Register Scenarios POM', () => {
     userCreds.email = existingEmail;
 
     await actions.registerFunctions(userCreds);
-    await expect(elements.REGISTRATION_FAILURE_TEXT).toBeVisible();
+    await expect(locators.REGISTRATION_FAILURE_TEXT).toBeVisible();
   });
 
     // Verify validation name errors are displayed when attempting to register with invalid values.
@@ -58,7 +58,7 @@ test.describe('Register Scenarios POM', () => {
         email: randomEmail, 
         password: 'admin1234' 
       });
-      await expect(elements[validationField]).toHaveText(expected);
+      await expect(locators[validationField]).toHaveText(expected);
     })
   })
 
@@ -72,7 +72,7 @@ test.describe('Register Scenarios POM', () => {
         email: faker.internet.email(),
         password
       });
-      await expect(elements[validationField]).toHaveText(expected);
+      await expect(locators[validationField]).toHaveText(expected);
     })
   });
 
@@ -85,7 +85,7 @@ test.describe('Register Scenarios POM', () => {
       email: 'logan@login',
       password: 'admin1234'
     })
-    await expect(elements.EMAIL_WARNING).toBeVisible();
+    await expect(locators.EMAIL_WARNING).toBeVisible();
   });
 
   test('System should display an error for invalid email format', async ({ page }) => {
@@ -97,7 +97,7 @@ test.describe('Register Scenarios POM', () => {
       email: 'eee',
       password: 'admin1234'
     });
-    const emailField = elements.REGISTER_EMAIL_FIELD;
+    const emailField = locators.REGISTER_EMAIL_FIELD;
     const validationMessage = await emailField.evaluate(input => input.validationMessage);
     expect(validationMessage).toContain("Please include an '@' in the email address.");
     });

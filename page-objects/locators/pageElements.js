@@ -102,6 +102,9 @@ export default class PageElements {
         this.PRODUCT_PRICE = page.locator(".price > .price-new");
 
         //Nav-Bar menus
+        this.NAVBAR_MENU = page.locator("//nav[@id='menu']")
+        this.NAVBAR_LINKS = page.locator('#menu .nav-link');
+        this.FOOTER_LINKS = page.locator('footer .row .col-sm-3 ul.list-unstyled li a');
         this.NAV_DESKTOPS = page.locator('main li:nth-child(1) a:nth-child(1)');
         this.NAV_LAPTOPS = page.locator('main li:nth-child(2) a:nth-child(1)');
         this.NAV_COMPONENTS = page.locator('main li:nth-child(3) a:nth-child(1)');
@@ -119,5 +122,10 @@ export default class PageElements {
         this.NOT_FOUND_RESULT = page.locator("div[id='content'] p");
         this.PRODUCT_DESCRIPTION = page.locator("div[class='description'] p");
         this.PRODUCT_TITLE = page.locator("div[class='description'] h4 a")
+        this.PRODUCT_CARD = page.locator('#product-list .product-thumb');
+        this.PRODUCT_TITLE = page.locator('#product-list .product-thumb h4 a');
+        this.PRODUCT_DESCRIPTION = page.locator('#product-list .product-thumb .description p');
+        this.PRODUCT_PRICE = page.locator('#product-list .product-thumb .price');
+        this.NOT_FOUND_RESULT = page.locator("//p[normalize-space()='There are no products to list in this category.']");
     }   
 }
