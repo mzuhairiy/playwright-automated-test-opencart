@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import LayoutElements from '../locators/layout-page-elements.js';
+import LayoutElements from '../locators/layout-elements';
 import testData from '../../utils/data.json';
 
 export default class LayoutActions {

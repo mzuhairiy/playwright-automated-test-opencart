@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import ResistStorePage from "../page-objects/actions/resistStorePage"
+import ResistStorePage from '../page-objects/actions/resistStorePage';
 import PageElements from '../page-objects/locators/pageElements';
 import config from '../app-config/config.json'
 
