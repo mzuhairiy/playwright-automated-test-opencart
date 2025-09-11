@@ -1,11 +1,9 @@
-export default class LaypoutElements {
+export default class LayoutElements {
     constructor(page) {
         this.page = page;
         // NAVBAR
         this.NAVBAR_MENU = page.locator("//nav[@id='menu']");
         this.NAVBAR_LINKS = page.locator("#menu .nav-link");
-        this.FOOTER_LINKS = page.locator("footer .row .col-sm-3 ul.list-unstyled li a");
-
         this.NAV_DESKTOPS = page.locator("main li:nth-child(1) a:nth-child(1)");
         this.NAV_LAPTOPS = page.locator("main li:nth-child(2) a:nth-child(1)");
         this.NAV_COMPONENTS = page.locator("main li:nth-child(3) a:nth-child(1)");
@@ -31,5 +29,8 @@ export default class LaypoutElements {
         this.PRODUCT_TITLE = page.locator("#product-list .product-thumb h4 a");
         this.PRODUCT_DESCRIPTION = page.locator("#product-list .product-thumb .description p");
         this.PRODUCT_PRICE = page.locator("#product-list .product-thumb .price");
+
+        // FOOTER
+        this.FOOTER_LINKS = page.locator("footer .row .col-sm-3 ul.list-unstyled li a");
     }
 }
