@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import PageElements from '../locators/pageElements';
+import PageElements from '../locators/main-page-elements';
 import testData from '../../utils/data.json';
 
 export default class ResistStorePage {
@@ -44,6 +44,41 @@ export default class ResistStorePage {
         await expect(this.pageElements.FORGOT_PASSWORD_H2).toBeVisible();
         await this.pageElements.FORGOT_PASSWORD_EMAIL_FIELD.fill(email);
         await this.pageElements.CONTINUE_FORGOT_PASSWORD.click();
+        await this.page.waitForTimeout(1000);
+    }
+
+    async resetPassword() {
+        let resetLink;
+        for (let attempt = 1; attempt <= 5; attempt++) {
+            const res = await this.page.request.get('http://localhost:8025/api/v2/messages');
+            const data = await res.json();
+            if (data.total > 0) {
+                const body = data.items[0].Content.Body;
+                const htmlPartMatch = body.match(/Content-Type: text\/html;[^]*?base64\s+([^]*?)\r\n--/);
+                if (htmlPartMatch) {
+                    const base64Content = htmlPartMatch[1].trim();
+                    const decodedHtml = Buffer.from(base64Content, 'base64').toString('utf8');
+                    const match = decodedHtml.match(/http:\/\/[^\s"]+reset[^\s"]+/);
+                    if (match) {
+                        resetLink = match[0]
+                            .replace(/<br\s*\/?>/gi, '')
+                            .trim();
+                        break;
+                    }
+                }
+            }
+            await this.page.waitForTimeout(1000);
+        }
+
+        await this.page.goto(resetLink);
+        const newPassword = 'password123';
+        
+        await expect(this.pageElements.FORGOT_PASSWORD_H2).toBeVisible();
+        await this.pageElements.PASSWORD_FIELD.fill(newPassword);
+        await this.pageElements.CONFIRM_PASSWORD_FIELD.fill(newPassword);
+        await this.pageElements.CONTINUE_FORGOT_PASSWORD.click();
+
+        return newPassword;
     }
 
     async registerFunctions({ firstName, lastName, email, password} ) {
@@ -168,30 +203,42 @@ export default class ResistStorePage {
         await this.pageElements.POSTCODE_FIELD_CO.fill(postcode);
     }
 
-    async accessAllNavbarMenus() {
+    async accessAllNavbarMenus(random = false) {
         const links = this.pageElements.NAVBAR_LINKS;
         const total = await links.count();
         console.log(`Total Navbar Links: ${total}`);
-            expect(total).toBeGreaterThan(0);
+        expect(total).toBeGreaterThan(0);
 
-        for (let i = 0; i < total; i++) {
-            const link = links.nth(i);
+        if (random) {
+            // random pick
+            const randomIndex = Math.floor(Math.random() * total);
+            const link = links.nth(randomIndex);
             const itemText = (await link.innerText()).trim();
 
             await Promise.all([
-            this.page.waitForNavigation({ waitUntil: 'load' }),
-            link.click(),
+                this.page.waitForNavigation({ waitUntil: 'load' }),
+                link.click(),
             ]);
 
-            console.log(`Accessed Navbar Menu: ${itemText}`);
-            await this.checkProductContent();
+            await this.accessAllSidebarMenus();
+        } else {
+            // loop semua
+            for (let i = 0; i < total; i++) {
+                const link = links.nth(i);
+                const itemText = (await link.innerText()).trim();
+
+                await Promise.all([
+                    this.page.waitForNavigation({ waitUntil: 'load' }),
+                    link.click(),
+                ]);
+                await this.checkProductContent();
+            }
         }
     }
 
     async accessAllFooterMenus() {
         const footerLinks = this.pageElements.FOOTER_LINKS;
         const count = await footerLinks.count();
-        console.log(`Total footer links: ${count}`);
 
         for (let i = 0; i < count; i++) {
             const link = footerLinks.nth(i);
@@ -199,23 +246,24 @@ export default class ResistStorePage {
 
             await link.click();
             await this.page.waitForTimeout(1000);
-
-            console.log(`✅ Accessed footer link: ${text}`);
         }
     }
 
     async accessAllSidebarMenus() {
-        const sidebarItems = this.pageElements.SIDEBAR_MENU;
-        const itemCount = await sidebarItems.count();
+        const sidebarLinks = this.pageElements.SIDE_BAR_LINKS_ON_PRODUCT_PAGE;
+        const count = await sidebarLinks.count();
+        console.log(`Sidebar menu count: ${count}`);
 
-        for (let i = 0; i < itemCount; i++) {
-            const item = sidebarItems.nth(i);
-            const itemText = await item.textContent();
-            await item.click();
-            await this.page.waitForTimeout(1000);
-            console.log(`Accessed Sidebar Menu: ${itemText}`);
-            await this.pageElements.HOME_ICON.click();
-            await expect(this.pageElements.FEATURED_H1).toBeVisible();
+        for (let i = 0; i < count; i++) {
+            const link = sidebarLinks.nth(i);
+            const text = await link.textContent();
+
+            await Promise.all([
+            this.page.waitForNavigation({ waitUntil: 'load' }),
+            link.click(),
+            ]);
+            console.log(`✅ Accessed Sidebar Menu: ${text}`);
+            await this.checkProductContent();
         }
     }
 
@@ -302,7 +350,7 @@ export default class ResistStorePage {
     async searchNonExistingProduct(productName) {
         await this.pageElements.SEARCH_INPUT.fill(productName);
         await this.pageElements.SEARCH_BUTTON.click();
-        await expect(this.pageElements.NOT_FOUND_RESULT).toHaveText("There is no product that matches the search criteria.");
+        await expect(this.pageElements.NOT_FOUND_RESULT_BY_SEARCH).toHaveText("There is no product that matches the search criteria.");
     }
 
     async selectSortOption(optionText) {

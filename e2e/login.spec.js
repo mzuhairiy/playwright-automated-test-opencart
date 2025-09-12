@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import ResistStorePage from "../page-objects/actions/resistStorePage"
-import PageElements from '../page-objects/locators/pageElements';
+import ResistStorePage from "../page-objects/actions/main-actions";
+import PageElements from '../page-objects/locators/main-page-elements';
 import config from '../app-config/config.json'
 
 test.describe('Login Scenarios POM', () => {
@@ -26,9 +26,13 @@ test.describe('Login Scenarios POM', () => {
     await expect(locators.ERROR_ALERT).toBeVisible();
   });
   
-  test('User should be able to resets the password.', async ({}) => {
-    await actions.forgottenPassword('jyzyzonex@mailinator.com')
+  test.only('User should be able to resets the password and login with the new password', async ({}) => {
+    const email = 'qahucyc@mailinator.com'
+    await actions.forgottenPassword(email)
+    const newPassword = await actions.resetPassword();
     await expect(locators.SUCCESS_FORGOT_PASSWORD).toBeVisible();
+    await actions.loginFunctions(email, newPassword);
+    await expect(locators.MY_ACCOUNT_H2).toBeVisible();
   });
 
   test('User should not be able to reset the password with unregistered email', async ({}) => {
@@ -49,5 +53,12 @@ test.describe('Login Scenarios POM', () => {
   test('User should not be able to login with incorrect email', async ({}) => {
     await actions.loginFunctions('invalid@email', config.validUser.password)
     await expect(locators.ERROR_ALERT).toBeVisible();
+  });
+
+  test('User should be able to logout successfully', async ({}) => {
+    await actions.loginFunctions(config.validUser.email, config.validUser.password)
+    await expect(locators.MY_ACCOUNT_H2).toBeVisible();
+    await actions.logoutFunction();
+    await expect(locators.LOGOUT_H1).toBeVisible();
   });
 });

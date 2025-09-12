@@ -4,11 +4,12 @@ export default class PageElements {
         // Register and Login Elements
         this.page = page;
         this.REGISTER_LINK = this.page.locator("//a[normalize-space()='Register']")
-        this.LOGIN_LINK = this.page.locator("//a[normalize-space()='Login']")
+        this.LOGIN_LINK = this.page.locator('//ul[@class="dropdown-menu dropdown-menu-right show"]//a[text()="Login"]')
         this.MY_ACCOUNT_DROPDOWN = page.locator("//span[normalize-space()='My Account']");
         this.H2_RETURNING_CUSTOMER = page.locator("form[id='form-login'] h2");
         this.EMAIL_FIELD = page.locator("#input-email");
         this.PASSWORD_FIELD = page.locator("#input-password");
+        this.CONFIRM_PASSWORD_FIELD = page.locator("#input-confirm");
         this.LOGIN_BTN = page.locator("//button[normalize-space()='Login']");
         this.MY_ACCOUNT_H2 = page.locator("//h2[normalize-space()='My Account']");
         this.ERROR_ALERT = page.getByText('Warning: No match for E-Mail');
@@ -38,6 +39,7 @@ export default class PageElements {
         this.PRIVACY_POLICY_WARNING = page.getByText('Warning: You must agree to the Privacy Policy!')
         this.REGISTER_CONTINUE_TO_ACCOUNT_BTN = page.locator("//a[normalize-space()='Continue']")
         this.HOME_ICON = page.locator('.breadcrumb-item').first();
+        this.ENTER_NEW_PASSWORD = page.getByText('Enter the new password you wish to use.', { exact: true });
 
         // Products, Checkout Elements
         this.PRODUCT_IMAGES = page.locator(".product-thumb");
@@ -127,5 +129,7 @@ export default class PageElements {
         this.PRODUCT_DESCRIPTION = page.locator('#product-list .product-thumb .description p');
         this.PRODUCT_PRICE = page.locator('#product-list .product-thumb .price');
         this.NOT_FOUND_RESULT = page.locator("//p[normalize-space()='There are no products to list in this category.']");
+        this.NOT_FOUND_RESULT_BY_SEARCH = page.locator("//p[normalize-space()='There is no product that matches the search criteria.']");
+        this.SIDE_BAR_LINKS_ON_PRODUCT_PAGE = page.locator("#column-left .list-group .list-group-item");
     }   
 }

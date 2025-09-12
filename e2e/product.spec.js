@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { generateUserCheckoutData } from '../utils/user-data-generator';
-import ResistStorePage from '../page-objects/actions/resistStorePage';
-import PageElements from '../page-objects/locators/pageElements';
+import ResistStorePage from '../page-objects/actions/main-actions';
+import PageElements from '../page-objects/locators/main-page-elements';
 import config from '../app-config/config.json';
 
 test.describe('Product Scenarios POM', () => {
@@ -130,15 +130,22 @@ test.describe('Product Scenarios POM', () => {
   });
 
   test('Should be able to do price sorting high to low', async ({ page }) => {
-  await actions.loginFunctions(config.validUser.email, config.validUser.password);
-  await expect(locators.MY_ACCOUNT_H2).toBeVisible();
-  await locators.HOME_ICON.click();
-  await expect(locators.FEATURED_H1).toBeVisible();
-  await actions.searchForProduct();
-  await actions.selectSortOption('Price (High > Low)');
-  await expect(locators.PRODUCT_PRICE.first()).toBeVisible();
-  const prices = await actions.getAllPrices();
-  const sortedDescending = await actions.isSortedDescending(prices);
-  expect(sortedDescending).toBeTruthy();
-});
+    await actions.loginFunctions(config.validUser.email, config.validUser.password);
+    await expect(locators.MY_ACCOUNT_H2).toBeVisible();
+    await locators.HOME_ICON.click();
+    await expect(locators.FEATURED_H1).toBeVisible();
+    await actions.searchForProduct();
+    await actions.selectSortOption('Price (High > Low)');
+    await expect(locators.PRODUCT_PRICE.first()).toBeVisible();
+    const prices = await actions.getAllPrices();
+    const sortedDescending = await actions.isSortedDescending(prices);
+    expect(sortedDescending).toBeTruthy();
+ });
+
+  test('User should be able to access all sidebar on the product page', async ({}) => {
+    await actions.loginFunctions(config.validUser.email, config.validUser.password)
+    await expect(locators.MY_ACCOUNT_H2).toBeVisible();
+    await actions.accessAllNavbarMenus(true);
+    await actions.accessAllSidebarMenus();
+  });
 });
