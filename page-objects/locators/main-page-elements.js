@@ -3,8 +3,10 @@ export default class PageElements {
 
         // Register and Login Elements
         this.page = page;
-        this.REGISTER_LINK = this.page.locator("//a[normalize-space()='Register']")
-        this.LOGIN_LINK = this.page.locator('//ul[@class="dropdown-menu dropdown-menu-right show"]//a[text()="Login"]')
+        this.REGISTER_LINK = page.locator("//a[normalize-space()='Register']")
+        this.LOGIN_LINK = page.locator('//ul[@class="dropdown-menu dropdown-menu-right show"]//a[text()="Login"]')
+        this.LOGOUT_LINK = page.locator('//ul[@class="dropdown-menu dropdown-menu-right show"]//a[text()="Logout"]')
+        this.SUCCESSFULLY_LOGOUT_H1 = page.locator("//h1[normalize-space()='Account Logout']");
         this.MY_ACCOUNT_DROPDOWN = page.locator("//span[normalize-space()='My Account']");
         this.H2_RETURNING_CUSTOMER = page.locator("form[id='form-login'] h2");
         this.EMAIL_FIELD = page.locator("#input-email");

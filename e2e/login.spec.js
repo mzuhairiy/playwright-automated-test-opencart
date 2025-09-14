@@ -26,7 +26,7 @@ test.describe('Login Scenarios POM', () => {
     await expect(locators.ERROR_ALERT).toBeVisible();
   });
   
-  test.only('User should be able to resets the password and login with the new password', async ({}) => {
+  test('User should be able to resets the password and login with the new password', async ({}) => {
     const email = 'qahucyc@mailinator.com'
     await actions.forgottenPassword(email)
     const newPassword = await actions.resetPassword();
@@ -59,6 +59,6 @@ test.describe('Login Scenarios POM', () => {
     await actions.loginFunctions(config.validUser.email, config.validUser.password)
     await expect(locators.MY_ACCOUNT_H2).toBeVisible();
     await actions.logoutFunction();
-    await expect(locators.LOGOUT_H1).toBeVisible();
+    await expect(locators.SUCCESSFULLY_LOGOUT_H1).toBeVisible();
   });
 });

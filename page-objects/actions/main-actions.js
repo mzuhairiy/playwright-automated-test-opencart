@@ -49,7 +49,7 @@ export default class ResistStorePage {
 
     async resetPassword() {
         let resetLink;
-        for (let attempt = 1; attempt <= 5; attempt++) {
+        for (let i = 1; i <= 5; i++) {
             const res = await this.page.request.get('http://localhost:8025/api/v2/messages');
             const data = await res.json();
             if (data.total > 0) {
@@ -93,6 +93,11 @@ export default class ResistStorePage {
         await this.pageElements.PRIVACY_POLICY_TOOGLE.click();
         await this.pageElements.REGISTER_CONTINUE_BUTTON.click();
         await this.page.waitForTimeout(500);
+    }
+
+    async logoutFunction() {
+        await this.pageElements.MY_ACCOUNT_DROPDOWN.click();
+        await this.pageElements.LOGOUT_LINK.click();
     }
 
     async selectRandomProductFromHomepage() {
