@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 import LoginPage from "../page-objects/actions/login-actions";
 import AuthElements from '../page-objects/locators/auth-page-elements';
-import config from '../app-config/config.json'
+import config from '../app-config/config.json';
+import { logger, addTestInfo } from '../utils/logger/logger.js';
 
 /**
  * @file Login test scenarios for Opencart application
